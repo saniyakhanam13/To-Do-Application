@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="AuraTodo - A premium, interactive client-side task management dashboard with local storage persistence, filtering, sorting, priorities, categories, and due dates.">
+  <title>AuraTodo - Elevate Your Productivity</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Application Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-background">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
+  <div class="app-container">
+    <!-- App Header -->
+    <header class="app-header">
+      <div class="header-left">
+        <div class="logo-area">
+          <div class="logo-icon">
+            <i class="fa-solid fa-feather-pointed"></i>
+          </div>
+          <h1>AuraTodo</h1>
+        </div>
+        <p class="header-subtitle" id="current-date-string">Tuesday, June 30</p>
+      </div>
+      <div class="header-right">
+        <!-- Theme Toggle -->
+        <button id="theme-toggle-btn" class="icon-btn theme-toggle" aria-label="Toggle Theme">
+          <i class="fa-solid fa-moon moon-icon"></i>
+          <i class="fa-solid fa-sun sun-icon"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Stats Dashboard Section -->
+    <section class="stats-dashboard" aria-label="Task Statistics">
+      <div class="stat-card progress-card">
+        <div class="progress-radial-wrapper">
+          <svg class="radial-progress-svg" viewBox="0 0 100 100">
+            <circle class="radial-bg" cx="50" cy="50" r="40"></circle>
+            <circle class="radial-bar" cx="50" cy="50" r="40" id="stat-radial-progress"></circle>
+          </svg>
+          <div class="radial-text" id="stat-progress-percent">0%</div>
+        </div>
+        <div class="stat-details">
+          <h3>Progress</h3>
+          <p id="stat-progress-text">Let's get started!</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon total-icon">
+          <i class="fa-solid fa-list-check"></i>
+        </div>
+        <div class="stat-info">
+          <span class="stat-number" id="stat-total-tasks">0</span>
+          <span class="stat-label">Total Tasks</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon pending-icon">
+          <i class="fa-solid fa-clock-rotate-left"></i>
+        </div>
+        <div class="stat-info">
+          <span class="stat-number" id="stat-pending-tasks">0</span>
+          <span class="stat-label">Pending</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon completed-icon">
+          <i class="fa-solid fa-circle-check"></i>
+        </div>
+        <div class="stat-info">
+          <span class="stat-number" id="stat-completed-tasks">0</span>
+          <span class="stat-label">Completed</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Content Area -->
+    <main class="app-main">
+      <!-- Task Creation Card -->
+      <section class="creator-section">
+        <div class="card creator-card">
+          <h2>Create New Task</h2>
+          <form id="todo-form" class="todo-form">
+            <div class="form-group title-group">
+              <label for="task-title-input">Task Title</label>
+              <input type="text" id="task-title-input" placeholder="What needs to be done?" required maxlength="80">
+            </div>
+            
+            <div class="form-group desc-group">
+              <label for="task-desc-input">Description (Optional)</label>
+              <textarea id="task-desc-input" placeholder="Add some details..." rows="2" maxlength="200"></textarea>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="task-category-select">Category</label>
+                <div class="select-wrapper">
+                  <select id="task-category-select">
+                    <option value="Personal" selected>📁 Personal</option>
+                    <option value="Work">💼 Work</option>
+                    <option value="Shopping">🛒 Shopping</option>
+                    <option value="Health">❤️ Health & Wellness</option>
+                    <option value="Finance">💰 Finance</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="task-priority-select">Priority</label>
+                <div class="select-wrapper">
+                  <select id="task-priority-select">
+                    <option value="low">🟢 Low</option>
+                    <option value="medium" selected>🟡 Medium</option>
+                    <option value="high">🔴 High</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="task-date-input">Due Date</label>
+                <input type="date" id="task-date-input">
+              </div>
+            </div>
+
+            <button type="submit" class="submit-btn" id="add-task-btn">
+              <span>Create Task</span>
+              <i class="fa-solid fa-plus"></i>
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <!-- Task List and Filtering Section -->
+      <section class="list-section">
+        <div class="card list-card">
+          <!-- Control Panel (Search, Filters, Sort) -->
+          <div class="list-controls">
+            <div class="search-box">
+              <i class="fa-solid fa-magnifying-glass search-icon"></i>
+              <input type="text" id="search-input" placeholder="Search tasks...">
+              <button id="clear-search-btn" class="clear-search-btn" aria-label="Clear Search" style="display:none;">
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+            </div>
+            
+            <div class="controls-action-bar">
+              <div class="filter-tabs" role="tablist">
+                <button class="filter-tab active" data-filter="all" role="tab" aria-selected="true">All</button>
+                <button class="filter-tab" data-filter="active" role="tab" aria-selected="false">Active</button>
+                <button class="filter-tab" data-filter="completed" role="tab" aria-selected="false">Completed</button>
+              </div>
+
+              <div class="sorting-wrapper">
+                <label for="sort-select" class="sort-label"><i class="fa-solid fa-arrow-down-wide-short"></i></label>
+                <div class="select-wrapper">
+                  <select id="sort-select" aria-label="Sort Tasks">
+                    <option value="createdAt-desc" selected>Newest First</option>
+                    <option value="createdAt-asc">Oldest First</option>
+                    <option value="dueDate-asc">Due Date (Soonest)</option>
+                    <option value="priority-desc">Priority (High to Low)</option>
+                  </select>
+                </div>
+              </div>
+
+              <button id="clear-completed-btn" class="text-btn danger-text-btn" title="Clear Completed Tasks">
+                <i class="fa-solid fa-trash-sweep"></i>
+                <span>Clear Completed</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Dynamic Task List -->
+          <div class="todo-list-wrapper">
+            <ul id="todo-list" class="todo-list">
+              <!-- Dynamically populated tasks -->
+            </ul>
+
+            <!-- Empty State Illustration -->
+            <div id="empty-state" class="empty-state">
+              <div class="empty-illustration">
+                <svg viewBox="0 0 200 200" width="160" height="160">
+                  <defs>
+                    <linearGradient id="illustration-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="var(--accent-primary)" />
+                      <stop offset="100%" stop-color="var(--accent-secondary)" />
+                    </linearGradient>
+                  </defs>
+                  <!-- Drawing a checkboard list graphic -->
+                  <rect x="35" y="45" width="130" height="120" rx="15" fill="none" stroke="var(--text-muted)" stroke-width="3" stroke-dasharray="6,4" opacity="0.3"></rect>
+                  <rect x="45" y="30" width="110" height="130" rx="12" fill="var(--bg-card)" stroke="var(--border-color)" stroke-width="3"></rect>
+                  <!-- Checklist items -->
+                  <circle cx="70" cy="70" r="10" fill="none" stroke="var(--border-color)" stroke-width="2.5"></circle>
+                  <line x1="95" y1="70" x2="135" y2="70" stroke="var(--text-muted)" stroke-width="3" stroke-linecap="round" opacity="0.4"></line>
+                  
+                  <circle cx="70" cy="100" r="10" fill="none" stroke="var(--border-color)" stroke-width="2.5"></circle>
+                  <line x1="95" y1="100" x2="130" y2="100" stroke="var(--text-muted)" stroke-width="3" stroke-linecap="round" opacity="0.4"></line>
+
+                  <!-- Sparkles/Stars -->
+                  <path d="M150,55 L153,62 L160,65 L153,68 L150,75 L147,68 L140,65 L147,62 Z" fill="url(#illustration-grad)"></path>
+                  <path d="M55,135 L57,139 L61,141 L57,143 L55,147 L53,143 L49,141 L53,139 Z" fill="url(#illustration-grad)" transform="scale(0.8) translate(10, 10)"></path>
+                  
+                  <!-- Floating checkmark -->
+                  <circle cx="115" cy="115" r="28" fill="url(#illustration-grad)"></circle>
+                  <path d="M104,115 L112,123 L126,107" fill="none" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+              </div>
+              <h3>No tasks found</h3>
+              <p id="empty-state-detail">Create a task to kickstart your day, or clear your filters/search.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Task Edit Modal (Overlay) -->
+  <div id="edit-task-modal" class="modal-overlay" aria-hidden="true" role="dialog">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2>Edit Task</h2>
+        <button id="close-modal-btn" class="close-btn" aria-label="Close Edit Modal">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <form id="edit-todo-form" class="todo-form">
+        <input type="hidden" id="edit-task-id">
+        
+        <div class="form-group title-group">
+          <label for="edit-task-title-input">Task Title</label>
+          <input type="text" id="edit-task-title-input" placeholder="What needs to be done?" required maxlength="80">
+        </div>
+        
+        <div class="form-group desc-group">
+          <label for="edit-task-desc-input">Description (Optional)</label>
+          <textarea id="edit-task-desc-input" placeholder="Add some details..." rows="3" maxlength="200"></textarea>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="edit-task-category-select">Category</label>
+            <div class="select-wrapper">
+              <select id="edit-task-category-select">
+                <option value="Personal">📁 Personal</option>
+                <option value="Work">💼 Work</option>
+                <option value="Shopping">🛒 Shopping</option>
+                <option value="Health">❤️ Health & Wellness</option>
+                <option value="Finance">💰 Finance</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="edit-task-priority-select">Priority</label>
+            <div class="select-wrapper">
+              <select id="edit-task-priority-select">
+                <option value="low">🟢 Low</option>
+                <option value="medium">🟡 Medium</option>
+                <option value="high">🔴 High</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="edit-task-date-input">Due Date</label>
+            <input type="date" id="edit-task-date-input">
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" id="cancel-edit-btn" class="text-btn">Cancel</button>
+          <button type="submit" class="submit-btn">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification System -->
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  <!-- Audio elements for feedback -->
+  <audio id="sound-complete" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-84.wav" preload="auto"></audio>
+  <audio id="sound-delete" src="https://assets.mixkit.co/active_storage/sfx/2809/2809-84.wav" preload="auto"></audio>
+
+  <!-- Application Logic -->
+  <script src="app.js"></script>
+</body>
+</html>
