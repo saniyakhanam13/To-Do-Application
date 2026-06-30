@@ -1,6 +1,6 @@
-# AuraTodo 🚀
+# VortexTodo 🚀
 
-AuraTodo is a high-fidelity, interactive, client-side To-Do List application that pairs premium glassmorphic UI aesthetics with robust state management and local data persistence. It allows you to organize, categorize, search, sort, and complete your tasks with responsive animations and interface feedback.
+VortexTodo is a high-fidelity, interactive, client-side To-Do List application that pairs premium glassmorphic UI aesthetics with robust state management and local data persistence. It allows you to organize, categorize, search, sort, and complete your tasks with responsive animations and interface feedback.
 
 ## ✨ Features
 
@@ -23,7 +23,7 @@ AuraTodo is a high-fidelity, interactive, client-side To-Do List application tha
 
 ## 🚀 How to Run the Project
 
-No compilation, installations, or dependencies are required. You can launch and use AuraTodo directly in your browser:
+No compilation, installations, or dependencies are required. You can launch and use VortexTodo directly in your browser:
 
 ### Method 1: Local Direct Launch
 1. Clone the repository:

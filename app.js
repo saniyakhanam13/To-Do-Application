@@ -1,5 +1,5 @@
 /* -------------------------------------------------------------
- * AuraTodo - JavaScript Application Logic
+ * VortexTodo - JavaScript Application Logic
  * Implements CRUD, localStorage persistence, advanced filters,
  * multi-criteria sorting, search, stats computations, theme toggling,
  * sound effects, and CSS animation handlers.
@@ -18,7 +18,7 @@ let state = {
 const seedTasks = [
   {
     id: 'seed-task-1',
-    title: '🚀 Welcome to AuraTodo!',
+    title: '🚀 Welcome to VortexTodo!',
     description: 'Explore the interface, try light/dark mode, and play around with task options.',
     category: 'Personal',
     priority: 'high',
@@ -121,7 +121,7 @@ function setupDateHeader() {
 // --- Local Storage Management ---
 function loadStateFromLocalStorage() {
   // Load tasks
-  const savedTasks = localStorage.getItem('auratodo-tasks');
+  const savedTasks = localStorage.getItem('vortextodo-tasks');
   if (savedTasks) {
     try {
       state.tasks = JSON.parse(savedTasks);
@@ -136,18 +136,18 @@ function loadStateFromLocalStorage() {
   }
 
   // Load theme
-  const savedTheme = localStorage.getItem('auratodo-theme');
+  const savedTheme = localStorage.getItem('vortextodo-theme');
   const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
   state.theme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
   document.documentElement.setAttribute('data-theme', state.theme);
 }
 
 function saveTasksToStorage() {
-  localStorage.setItem('auratodo-tasks', JSON.stringify(state.tasks));
+  localStorage.setItem('vortextodo-tasks', JSON.stringify(state.tasks));
 }
 
 function saveThemeToStorage() {
-  localStorage.setItem('auratodo-theme', state.theme);
+  localStorage.setItem('vortextodo-theme', state.theme);
 }
 
 // --- Event Binding ---
